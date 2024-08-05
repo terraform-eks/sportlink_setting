@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sportlink-ingress
+  namespace: sportlink
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: my-eks-alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:533266985161:certificate/fdc472eb-3df5-43da-aaf7-2a8934014c4f
+
+spec:
+  ingressClassName: alb
+  rules:
+  - host: kangsw.shop  # 실제 도메인 이름으로 변경
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: sportlink-service  # Service 이름
+            port:
+              number: 80  # Service 포트 번호
+
+
+
+---
+
+
